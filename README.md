@@ -9,7 +9,7 @@ Sg337 genome of Pyricularia oryzae
 6) Find # of contigs, N50 values, genome size and other datapoints about your data.
 7) Post process your data to format for NCBI and ensure no contigs are shorter than 200 nt.
 8) Acess genome quality using BUSCO.
-9)Genome interrogation using BLAST to look at contig length and split contigs.
+9) Genome interrogation using BLAST to look at contig length and split contigs.
 10) Perform Gene predictions
 11) Visualize genes using genome browser
 12) record methods and process for future work
