@@ -43,10 +43,36 @@ Sg337 genome of Pyricularia oryzae
        contigs 	4241
        N50 94,346
     SPAdes (paired only) was chosen as the best assembly
-14) Post process your data to format for NCBI and ensure no contigs are shorter than 200 nt.
-15) Acess genome quality using BUSCO.
-16) Genome interrogation using BLAST to look at contig length and split contigs.
+13) Post process your data to format for NCBI and ensure no contigs are shorter than 200 nt.
+    perl SimpleFastaHeaders.pl path/to/MyGenomeID.fasta MyGenomeID
+    sbatch path/to/GenomePostProcess.sh path/to/MyGenomeID_newheader.fasta
+14) Acess genome quality using BUSCO.
+   sbatch BuscoSingularity.sh path/to/MyGenome.fasta
+   results can be viewed in the short_summary file inside the BUSCO output directory (MyGenomeID_final_busco)
+15) Genome interrogation using BLAST to look at contig length and split contigs.
+    blastn -query MoMitochondrion.fasta -subject MyGenome_final.fasta -evalue 1e-50 -max_target_seqs 20000 -outfmt '6 qseqid sseqid slen length qstart qend sstart send btop' -out MoMitochondrion.MyGenome.BLAST
+    singularity run --app blast2120 /share/singularity/images/ccs/conda/amd-conda1-centos8.sinf blastn...
+    awk '$4/$3 >= 0.9 {print $2 ",mitochondrion"}' MoMitochondrion.MyGenome.BLAST > MyGenome_mitochondrion.csv
+    awk '$4/$3 <= 0.9' MoMitochrondrion.MyGenomeID.BLAST > MyGenomeID_short_mitochrondial_hits.txt
+    awk '{sum[$2]+=$4; len[$2]=$3} END {for (c in sum) if (sum[c]/len[c] > 0.9) print c "," sum[c] "," len[c] "," sum[c]/len[c]}' MyGenomeID_short_mitochondrial_hits.txt > MyGenomeID_split_mito_contigs.csv
+16) Submit Genome to NCBI
 17) Perform Gene predictions
-18) Visualize genes using genome browser
-19) record methods and process for future work
-20) submit completed genome and information to NBCI.
+    Append the genome fasta sequence to the end of the gff3 file using the following command:
+    echo '##FASTA' | cat B71Ref2_a0.3.gff3 - B71Ref2.fasta > B71Ref2.gff3
+    Check that the B71Ref2.gff3 file has the correct format:
+    grep '##FASTA' -B 5 -A 5 B71Ref2.gff3
+    Convert the MAKER annotations to ZFF for SNAP:
+    maker2zff B71Ref2.gff3
+    fathom genome.ann genome.dna -gene-stats
+    fathom genome.ann genome.dna -categorize 1000
+    fathom uni.ann uni.dna -gene-stats
+    fathom uni.ann uni.dna -export 1000 -plus
+    forge export.ann export.dna
+    hmm-assembler.pl Moryzae . > Moryzae.hmm
+    Use SNAP
+    snap-hmm Moryzae.hmm MyGenome.fasta > MyGenome-snap.zff
+    fathom MyGenome-snap.zff MyGenome.fasta -gene-stats
+    snap-hmm Moryzae.hmm MyGenome.fasta -gff > MyGenome-snap.gff2
+21) Visualize genes using genome browser
+22) record methods and process for future work
+23) submit completed genome and information to NBCI.
