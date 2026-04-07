@@ -73,6 +73,18 @@ Sg337 genome of Pyricularia oryzae
     snap-hmm Moryzae.hmm MyGenome.fasta > MyGenome-snap.zff
     fathom MyGenome-snap.zff MyGenome.fasta -gene-stats
     snap-hmm Moryzae.hmm MyGenome.fasta -gff > MyGenome-snap.gff2
-21) Visualize genes using genome browser
-22) record methods and process for future work
-23) submit completed genome and information to NBCI.
+    augustus --species=magnaporthe_grisea --gff3=on \--singlestrand=true --progress=true \MyGenomeID_final.fasta > MyGenomeID-augustus.gff3
+    singularity exec /share/singularity/images/ccs/MAKER/amd-maker-debian10.sinfmaker -CTL
+    Open maker_opts.ctl with a text editor to change the settings
+    genome=/path/to/MyGenomeID_final.fasta
+    model_org= must be set to blank
+    repeat_protein= must be set to blank
+    snaphmm=/path/to/Moryzae.hmm
+    augustus_species=magnaporthe_grisea
+    keep_preds=1
+    protein=/home/yourusername/genes/maker/genbank/ncbi-protein-Magnaporthe_organism.fasta
+    sbatch maker.sh path/to/MyGenomeID_final.fasta
+21) Visualize genes using genome browser: https://igv.org/app/
+    upload MyGenomeID_final.fasta, and gff3 for snap and agustus
+23) record methods and process for future work
+24) submit completed genome and information to NBCI.
