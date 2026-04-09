@@ -85,6 +85,11 @@ Sg337 genome of Pyricularia oryzae
     protein=/home/yourusername/genes/maker/genbank/ncbi-protein-Magnaporthe_organism.fasta
     sbatch maker.sh path/to/MyGenomeID_final.fasta
     singularity exec /share/singularity/images/ccs/MAKER/amd-maker-debian10.sinf gff3_merge -d Sg337_final.maker.output/Sg337_final_master_datastore_index.log -o Sg337-maker.gff3
+    Use grep to find # of predicted genes in each gff3 file:
+     For gff3: grep -P "\tgene\t" MyGenomeID.gff3 | wc -l
+     Augustus: 17352
+     For gff2: awk 'NF {print $9}' Sg337-snap.gff2 | sort -u | wc -l
+     snap: 12424
 21) Visualize genes using genome browser: https://igv.org/app/
     upload MyGenomeID_final.fasta, and gff3 for snap, agustus, and MAKER
 23) record methods and process for future work
