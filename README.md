@@ -84,7 +84,8 @@ Sg337 genome of Pyricularia oryzae
     keep_preds=1
     protein=/home/yourusername/genes/maker/genbank/ncbi-protein-Magnaporthe_organism.fasta
     sbatch maker.sh path/to/MyGenomeID_final.fasta
+    singularity exec /share/singularity/images/ccs/MAKER/amd-maker-debian10.sinf gff3_merge -d Sg337_final.maker.output/Sg337_final_master_datastore_index.log -o Sg337-maker.gff3
 21) Visualize genes using genome browser: https://igv.org/app/
-    upload MyGenomeID_final.fasta, and gff3 for snap and agustus
+    upload MyGenomeID_final.fasta, and gff3 for snap, agustus, and MAKER
 23) record methods and process for future work
 24) submit completed genome and information to NBCI.
