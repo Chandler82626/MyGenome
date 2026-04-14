@@ -1,6 +1,17 @@
 # MyGenome
 Sg337 genome of Pyricularia oryzae
 
+<details> 
+   <summary>
+      Title
+   </summary>
+   explaination
+
+   ```
+   code
+   ```
+</details>
+
 1) Assess quality with FASTQC:
    fastqc path/to/Genome_1.fq.gz  path/to/Genome_2.fq.gz -o outputDirectory
 2) Look at html files to see report summaries.
@@ -85,12 +96,11 @@ Sg337 genome of Pyricularia oryzae
     protein=/home/yourusername/genes/maker/genbank/ncbi-protein-Magnaporthe_organism.fasta
     sbatch maker.sh path/to/MyGenomeID_final.fasta
     singularity exec /share/singularity/images/ccs/MAKER/amd-maker-debian10.sinf gff3_merge -d Sg337_final.maker.output/Sg337_final_master_datastore_index.log -o Sg337-maker.gff3
-    Use grep to find # of predicted genes in each gff3 file:
-     For gff3: grep -P "\tgene\t" MyGenomeID.gff3 | wc -l
-     Augustus: 17352
-     For gff2: awk 'NF {print $9}' Sg337-snap.gff2 | sort -u | wc -l
-     snap: 12424
-   For maker: awk '$3 == "gene"' Sg337-maker.gff3 | wc -l
+    Use grep/awk to find # of predicted genes in each gff3/gff2 file:
+     For maker: awk '$3 == "gene"' Sg337-maker.gff3 | wc -l
+     maker gene count: 12807
+     For augustus: grep "start gene" Sg337-augustus.gff3
+     augustus gene count: 17352
 21) Visualize genes using genome browser: https://igv.org/app/
     upload MyGenomeID_final.fasta, and gff3 for snap, agustus, and MAKER
 23) record methods and process for future work
