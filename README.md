@@ -90,6 +90,7 @@ Sg337 genome of Pyricularia oryzae
      Augustus: 17352
      For gff2: awk 'NF {print $9}' Sg337-snap.gff2 | sort -u | wc -l
      snap: 12424
+   For maker: awk '$3 == "gene"' Sg337-maker.gff3 | wc -l
 21) Visualize genes using genome browser: https://igv.org/app/
     upload MyGenomeID_final.fasta, and gff3 for snap, agustus, and MAKER
 23) record methods and process for future work
