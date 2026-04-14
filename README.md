@@ -101,6 +101,8 @@ Sg337 genome of Pyricularia oryzae
      maker gene count: 12807
      For augustus: grep "start gene" Sg337-augustus.gff3
      augustus gene count: 17352
+     for snap: awk '{print $9}' Sg337-snap.gff2 | sort -u | wc -l
+     snap gene count: 12424
 21) Visualize genes using genome browser: https://igv.org/app/
     upload MyGenomeID_final.fasta, and gff3 for snap, agustus, and MAKER
 23) record methods and process for future work
