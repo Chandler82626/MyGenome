@@ -3,27 +3,80 @@ Sg337 genome of Pyricularia oryzae
 
 <details> 
    <summary>
-      Title
+    1) Assess quality with FASTQC:
    </summary>
-   explaination
+     
+      ```
+      fastqc path/to/Genome_1.fq.gz  path/to/Genome_2.fq.gz -o outputDirectory
+      ```
+</details>
 
+<details> 
+   <summary>
+   2) Look at html files to see report summaries.
+   </summary>
+   insert photo
+</details>
+
+<details> 
+   <summary>
+   3) Ensure genome size is large enough and adapter contamination is not too bad.
+   </summary>
+   Total Bases	1.4 Gbp 
+   
+   Adapter Content: < 34%
+</details>
+
+<details> 
+   <summary>
+   4) Create a biosample project and upload raw reads at NCBI.
+   </summary>
+   BioProject: PRJNA926786
+   
+   SRA: SAMN55299609	
+</details>
+
+<details> 
+   <summary>
+   5) Use trimomatic to remove adaptors and poor quality sequence.
+   </summary>
+   BioProject: PRJNA926786
+   
+   SRA: SAMN55299609	
    ```
-   code
+   java -jar trimmomatic-0.38.jar PE -threads 2 -phred33 -trimlog Sg337_errorlog.txt path/to/Sg337_1.fq.gz         path/to/Sg337_2.fq.gz Sg337_1_paired.fastq Sg337_1_unpaired.fastq Sg337_2_paired.fastq   Sg337_2_unpaired.fastq ILLUMINACLIP:adaptors.fa:2:30:10 SLIDINGWINDOW:20:20 MINLEN:125
    ```
 </details>
 
-1) Assess quality with FASTQC:
-   fastqc path/to/Genome_1.fq.gz  path/to/Genome_2.fq.gz -o outputDirectory
-2) Look at html files to see report summaries.
-3) Ensure genome size is large enough and adapter contamination is not too bad.
-   Total Bases	1.4 Gbp
-   Adapter Content: < 34%
-4) Create a biosample project and upload raw reads at NCBI.
-   BioProject: PRJNA926786
-   SRA: SAMN55299609	
-5) Use trimomatic to remove adaptors and poor quality sequence.
-   java -jar trimmomatic-0.38.jar PE -threads 2 -phred33 -trimlog Sg337_errorlog.txt path/to/Sg337_1.fq.gz         path/to/Sg337_2.fq.gz Sg337_1_paired.fastq Sg337_1_unpaired.fastq Sg337_2_paired.fastq Sg337_2_unpaired.fastq ILLUMINACLIP:adaptors.fa:2:30:10 SLIDINGWINDOW:20:20 MINLEN:125
-10) Generate an optimized genome assembly by trying out different softwares such as Velvet (different kmers) and SPAdes.
+<details> 
+   <summary>
+   6) Generate an optimized genome assembly by trying out different softwares such as Velvet (different kmers) and SPAdes.
+   </summary>
+   
+   This step was done on the UK super computer with jobs.
+    Velvet10Step:
+      ```
+      sbatch path/to/velvetoptimiser.sh MyGenomeID lowK[43] highK[123] 10
+      ```
+    Velvet2Step:
+      ```
+      sbatch path/to/velvetoptimiser.sh MyGenomeID lowK[85] highK[101] 2
+      ```
+    SPAdes:
+      ```
+      sbatch path/to/spades.sh .Sg337
+      ```
+    SPAdes (paired only):
+      ```
+      sbatch path/to/spades-paired.sh .Sg337
+      ```
+   .sh attached
+</details>
+
+   
+
+   
+
     This step was done on the UK super computer with jobs.
     Velvet10Step:
       sbatch path/to/velvetoptimiser.sh MyGenomeID lowK[43] highK[123] 10
