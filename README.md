@@ -164,5 +164,6 @@ Sg337 genome of Pyricularia oryzae
 filter out contiges from blast, only take ones that dont match contig from our fasta file, list those
 blastn -query MyGenomeID.fasta -subject B71.fasta -evalue 1e-100 -outfmt 7 > MyGenomeID.B71.BLAST
 grep " 0 hits found" Sg337.B71.BLAST | wc -l
+ grep " 0 hits found" -B2 Sg337.B71.BLAST | grep "Sg337_contig****"
 24) record methods and process for future work
 25) submit completed genome and information to NBCI.
