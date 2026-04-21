@@ -204,8 +204,13 @@ Sg337 genome of Pyricularia oryzae
     upload MyGenomeID_final.fasta, and gff3 for snap, agustus, and MAKER
 22) Blast Aginst B71
 filter out contiges from blast, only take ones that dont match contig from our fasta file, list those
-blastn -query MyGenomeID.fasta -subject B71.fasta -evalue 1e-100 -outfmt 7 > MyGenomeID.B71.BLAST
-grep " 0 hits found" Sg337.B71.BLAST | wc -l
- grep " 0 hits found" -B2 Sg337.B71.BLAST | grep "Sg337_contig****"
+   blastn -query MyGenomeID.fasta -subject B71.fasta -evalue 1e-100 -outfmt 7 > MyGenomeID.B71.BLAST
+   grep " 0 hits found" Sg337.B71.BLAST | wc -l
+   grep " 0 hits found" -B 2 Sg337.B71.BLAST | grep -o "Sg337_contig[0-9]\{1,4\}"
+   convert BLAST > gff3
+
+start thursday
+   make B71 reference for gff3
+   
 24) record methods and process for future work
 25) submit completed genome and information to NBCI.
