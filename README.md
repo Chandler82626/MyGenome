@@ -158,31 +158,63 @@ Sg337 genome of Pyricularia oryzae
 
 <details>
   <summary>
-    10) Submit Genome to NCBI
+    11) Submit Genome to NCBI
   </summary>
    insert photo
 </details>
 
+<details>
+  <summary>
+    12) Perform Gene predictions
+  </summary>
 
-17) Perform Gene predictions
-    Append the genome fasta sequence to the end of the gff3 file using the following command:
-    echo '##FASTA' | cat B71Ref2_a0.3.gff3 - B71Ref2.fasta > B71Ref2.gff3
-    Check that the B71Ref2.gff3 file has the correct format:
-    grep '##FASTA' -B 5 -A 5 B71Ref2.gff3
-    Convert the MAKER annotations to ZFF for SNAP:
-    maker2zff B71Ref2.gff3
-    fathom genome.ann genome.dna -gene-stats
-    fathom genome.ann genome.dna -categorize 1000
-    fathom uni.ann uni.dna -gene-stats
-    fathom uni.ann uni.dna -export 1000 -plus
-    forge export.ann export.dna
-    hmm-assembler.pl Moryzae . > Moryzae.hmm
-    Use SNAP
+   Append the genome fasta sequence to the end of the gff3 file using the following command:
+
+   ```
+   echo '##FASTA' | cat B71Ref2_a0.3.gff3 - B71Ref2.fasta > B71Ref2.gff3
+   ```
+
+   Check that the B71Ref2.gff3 file has the correct format:
+
+   ```
+   grep '##FASTA' -B 5 -A 5 B71Ref2.gff3
+   ```
+
+   Convert the MAKER annotations to ZFF for SNAP:
+
+    ```
+   maker2zff B71Ref2.gff3
+   ```
+
+   details on code
+
+    ```
+   fathom genome.ann genome.dna -gene-stats
+   fathom genome.ann genome.dna -categorize 1000
+   fathom uni.ann uni.dna -gene-stats
+   fathom uni.ann uni.dna -export 1000 -plus
+   forge export.ann export.dna
+   hmm-assembler.pl Moryzae . > Moryzae.hmm
+   ```
+
+   Use SNAP
+
+   ```
     snap-hmm Moryzae.hmm MyGenome.fasta > MyGenome-snap.zff
     fathom MyGenome-snap.zff MyGenome.fasta -gene-stats
     snap-hmm Moryzae.hmm MyGenome.fasta -gff > MyGenome-snap.gff2
-    augustus --species=magnaporthe_grisea --gff3=on \--singlestrand=true --progress=true \MyGenomeID_final.fasta > MyGenomeID-augustus.gff3
-    singularity exec /share/singularity/images/ccs/MAKER/amd-maker-debian10.sinfmaker -CTL
+   ```
+
+   Use Augustus
+
+   ```
+   augustus --species=magnaporthe_grisea --gff3=on \--singlestrand=true --progress=true \MyGenomeID_final.fasta > MyGenomeID-augustus.gff3
+   ```
+
+   Use MAKER   
+
+   ```
+   singularity exec /share/singularity/images/ccs/MAKER/amd-maker-debian10.sinfmaker -CTL
     Open maker_opts.ctl with a text editor to change the settings
     genome=/path/to/MyGenomeID_final.fasta
     model_org= must be set to blank
@@ -193,24 +225,118 @@ Sg337 genome of Pyricularia oryzae
     protein=/home/yourusername/genes/maker/genbank/ncbi-protein-Magnaporthe_organism.fasta
     sbatch maker.sh path/to/MyGenomeID_final.fasta
     singularity exec /share/singularity/images/ccs/MAKER/amd-maker-debian10.sinf gff3_merge -d Sg337_final.maker.output/Sg337_final_master_datastore_index.log -o Sg337-maker.gff3
-    Use grep/awk to find # of predicted genes in each gff3/gff2 file:
-     For maker: awk '$3 == "gene"' Sg337-maker.gff3 | wc -l
-     maker gene count: 12807
-     For augustus: grep "start gene" Sg337-augustus.gff3
-     augustus gene count: 17352
-     for snap: awk '{print $9}' Sg337-snap.gff2 | sort -u | wc -l
-     snap gene count: 12424
-21) Visualize genes using genome browser: https://igv.org/app/
-    upload MyGenomeID_final.fasta, and gff3 for snap, agustus, and MAKER
-22) Blast Aginst B71
-filter out contiges from blast, only take ones that dont match contig from our fasta file, list those
+   ```
+
+   Use grep/awk to find # of predicted genes in each gff3/gff2 file:
+
+   ```
+   awk '$3 == "gene"' Sg337-maker.gff3 | wc -l
+   grep "start gene" Sg337-augustus.gff3
+   awk '{print $9}' Sg337-snap.gff2 | sort -u | wc -l
+   ```
+   maker gene count: 12807
+
+   augustus gene count: 17352
+
+   snap gene count: 12424
+
+</details>
+
+<details>
+  <summary>
+    11)Visualize genes using genome browser
+  </summary>
+   (https://igv.org/app/)
+   upload MyGenomeID_final.fasta, and gff3 for snap, agustus, and MAKER
+</details>
+
+<details>
+  <summary>
+    12)Blast Aginst B71
+  </summary>
+   filter out contiges from blast, only take ones that dont match contig from our fasta file, list those
+
+   ```
    blastn -query MyGenomeID.fasta -subject B71.fasta -evalue 1e-100 -outfmt 7 > MyGenomeID.B71.BLAST
    grep " 0 hits found" Sg337.B71.BLAST | wc -l
    grep " 0 hits found" -B 2 Sg337.B71.BLAST | grep -o "Sg337_contig[0-9]\{1,4\}"
-   convert BLAST > gff3
+   convert BLAST > gff3:
+   awk 'BEGIN {OFS="\t"} 
+   !/^#/ {
+   start = ($7 <= $8) ? $7 : $8;
+   end   = ($7 <= $8) ? $8 : $7;
+   print $1, "awk", "BLAST", start, end, ".", "+", ".", "ID=none"
+   }' B71.Sg337.BLAST > output.gff3
 
-start thursday
-   make B71 reference for gff3
+   ```
+
+</details>
+
+<details>
+  <summary>
+    13) Make protien fasta
+
+    ```
+    singularity exec /share/singularity/images/ccs/MAKER/amd-maker-debian10.sinf fasta_merge -d MyGenomeID_final.maker.output/MyGenomeID_final_master_datastore_index.log -o MyGenomeID
+    ```
+  
+</details>
+
+<details>
+  <summary>
+    14)Using RNAseq Data to Confirm Gene Predictions
+  </summary>
+  Change directory into RNAseq 
    
-24) record methods and process for future work
-25) submit completed genome and information to NBCI.
+  Align the first set of reads to your MyGenome assembly - the version you used for gene prediction
+
+  ```
+   sbatch hisat2.sh path/to/MyGenomeID_final.fasta FR13_inCulture.fastq.gz
+
+   ```
+
+Look at the resulting alignment summary file to determine the fraction fo reads that aligned to your genome assembly
+
+Align the second set of reads to your MyGenome assembly - the version you used for gene prediction
+
+```
+sbatch hisat2.sh path/to/MyGenomeID_final.fasta SSID116_inPlanta.fastq.gz
+
+```
+
+Look at the resulting alignment summary file to determine the fraction fo reads that aligned to your genome assembly
+
+Transfer the alignment and index files (.bam and bam.bai) to the machine that is running IGV
+
+Load your genome assembly into IGV and then load the tracks for your gene predictions and the RNAseq aligment data (make sure the .bai files are in the same directory as the .bam files)
+
+Use the browser to identify predicted genes that have large numbers of RNAseq reads aligning to them and then search for examples of the following:
+
+   genes with predicted introns:
+   
+   do the RNAseq data support the placement of the predicted introns?
+   
+   are the introns spliced out 100% of the time?
+   
+   genes that are only expressed in culture
+   
+   genes that are only expressed in planta
+   
+   predicted genes with no evidence of expression
+   
+   are there any expressed genes that were not predicted?
+
+</details>
+
+</details>
+
+<details>
+  <summary>
+    13) Record methods and process for future work (This Github!)
+</details>
+
+<details>
+  <summary>
+    13) submit completed genome and information to NBCI.
+</details>
+
