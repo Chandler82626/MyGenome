@@ -275,7 +275,7 @@ Sg337 genome of Pyricularia oryzae
 <details>
   <summary>
     13) Make protien fasta
-
+  </summary>
     ```
     singularity exec /share/singularity/images/ccs/MAKER/amd-maker-debian10.sinf fasta_merge -d MyGenomeID_final.maker.output/MyGenomeID_final_master_datastore_index.log -o MyGenomeID
     ```
