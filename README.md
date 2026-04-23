@@ -244,7 +244,7 @@ Sg337 genome of Pyricularia oryzae
 
 <details>
   <summary>
-    11)Visualize genes using genome browser
+    13)Visualize genes using genome browser
   </summary>
    (https://igv.org/app/)
    upload MyGenomeID_final.fasta, and gff3 for snap, agustus, and MAKER
@@ -252,7 +252,7 @@ Sg337 genome of Pyricularia oryzae
 
 <details>
   <summary>
-    12)Blast Aginst B71
+    14)Blast Aginst B71
   </summary>
    filter out contiges from blast, only take ones that dont match contig from our fasta file, list those
 
@@ -274,7 +274,7 @@ Sg337 genome of Pyricularia oryzae
 
 <details>
   <summary>
-    13) Make protien fasta
+    15) Make protien fasta
   </summary>
     ```
     singularity exec /share/singularity/images/ccs/MAKER/amd-maker-debian10.sinf fasta_merge -d MyGenomeID_final.maker.output/MyGenomeID_final_master_datastore_index.log -o MyGenomeID
@@ -284,7 +284,7 @@ Sg337 genome of Pyricularia oryzae
 
 <details>
   <summary>
-    14)Using RNAseq Data to Confirm Gene Predictions
+    16)Using RNAseq Data to Confirm Gene Predictions
   </summary>
   Change directory into RNAseq 
    
@@ -332,7 +332,7 @@ Use the browser to identify predicted genes that have large numbers of RNAseq re
 
 <details>
   <summary>
-    13) Record methods and process for future work (This Github!)
+    17) Record methods and process for future work (This Github!)
 </details>
 
 <details>
