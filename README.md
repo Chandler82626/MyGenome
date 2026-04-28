@@ -310,21 +310,11 @@ Transfer the alignment and index files (.bam and bam.bai) to the machine that is
 
 Load your genome assembly into IGV and then load the tracks for your gene predictions and the RNAseq aligment data (make sure the .bai files are in the same directory as the .bam files)
 
-Use the browser to identify predicted genes that have large numbers of RNAseq reads aligning to them and then search for examples of the following:
+region with no predicted gene and high expression
 
-   genes with predicted introns:
-   
-   do the RNAseq data support the placement of the predicted introns?
-   
-   are the introns spliced out 100% of the time?
-   
-   genes that are only expressed in culture
-   
-   genes that are only expressed in planta
-   
-   predicted genes with no evidence of expression
-   
-   are there any expressed genes that were not predicted?
+```
+AATAAAGGAAGAGAGAAATCGTGCTAGATACGCCTTTTATAATACAGCGGGACCGGAATCGTTCAACACTCGCTCGGATTAACCCGGACAGACCACGACGTTAAAGTCCGACCCAATCTGACATCGTTACAGGTTTCCCCGACACTGACTCTGATACCCGTAATATAATCCGATTGATGAAACTTGATGCATTTTGCGCCGAGGCAATCGCCAAGGGTCCTGGAAGGTTTGAAGCTCCCGGCAAAAATGCAGACTAGACACCCGTTGATGGTTTGGTCGCTGTCCATATCCGACAAAGGGTACATTTTCTCCTGGTAATGCTCTTCAGGACTCGAGGGGCGGGCTGCTGAGATGGTGGTAGCCAAAGCGCAAAGTATGGGAACGGAAAGAGTTTGTTTGAACTGCATGATGATGTTTTTTGGTGTTGTTTGCTTGGCT
+```
 
 </details>
 
@@ -337,6 +327,6 @@ Use the browser to identify predicted genes that have large numbers of RNAseq re
 
 <details>
   <summary>
-    13) submit completed genome and information to NBCI.
+    18) submit completed genome and information to NBCI.
 </details>
 
