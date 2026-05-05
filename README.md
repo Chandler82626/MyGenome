@@ -13,9 +13,8 @@ Sg337 genome of Pyricularia oryzae
 
 <details> 
    <summary>
-   2) Look at html files to see report summaries.
+   2) Look at html files to see report summaries. 
    </summary>
-   ![FastQ Image]([fastq adapter check.png](https://github.com/Chandler82626/MyGenome/blob/main/fastq%20adapter%20check.png))
 </details>
 
 <details> 
@@ -25,6 +24,8 @@ Sg337 genome of Pyricularia oryzae
    Total Bases	1.4 Gbp 
    
    Adapter Content: < 34%
+
+   <img width="2320" height="1346" alt="image" src="https://github.com/user-attachments/assets/6b701c50-1a90-4e24-966b-6c780b9c01d2" />
 </details>
 
 <details> 
@@ -34,15 +35,16 @@ Sg337 genome of Pyricularia oryzae
    BioProject: PRJNA926786
    
    SRA: SAMN55299609	
+
+   <img width="798" height="1041" alt="image" src="https://github.com/user-attachments/assets/8a82fc60-0753-40ce-b09a-6feee30bcbda" />
+
 </details>
 
 <details> 
    <summary>
    5) Use trimomatic to remove adaptors and poor quality sequence.
    </summary>
-   BioProject: PRJNA926786
-   
-   SRA: SAMN55299609	
+
    ```
    java -jar trimmomatic-0.38.jar PE -threads 2 -phred33 -trimlog Sg337_errorlog.txt path/to/Sg337_1.fq.gz path/to/Sg337_2.fq.gz Sg337_1_paired.fastq Sg337_1_unpaired.fastq Sg337_2_paired.fastq Sg337_2_unpaired.fastq ILLUMINACLIP:adaptors.fa:2:30:10 SLIDINGWINDOW:20:20 MINLEN:125
    ```
@@ -71,13 +73,13 @@ Sg337 genome of Pyricularia oryzae
       
       sbatch path/to/spades-paired.sh .Sg337
       
-   .sh attached
+   .sh files are in main
    
 </details>
 
 <details> 
    <summary>
-      7)Find # of contigs, N50 values, genome size and other datapoints about your data.
+      7) Find # of contigs, N50 values, genome size and other datapoints about your data.
    </summary>
    Velvet10Step:
    
@@ -116,6 +118,14 @@ Sg337 genome of Pyricularia oryzae
        N50 94,346
        
     SPAdes (paired only) was chosen as the best assembly
+
+   Visualize Genome with Bandange
+
+   Zoomed Out
+   <img width="864" height="746" alt="image" src="https://github.com/user-attachments/assets/af1cc1bc-4d16-4dcb-a735-b730b90683cd" />
+
+   Zoomed In
+   <img width="1380" height="955" alt="image" src="https://github.com/user-attachments/assets/f0f2d2fd-7be5-44e2-832e-29551c6be2f3" />
     
 </details>
 
@@ -131,13 +141,16 @@ Sg337 genome of Pyricularia oryzae
 
 <details>
   <summary>
-    9)Acess genome quality using BUSCO.
+    9) Acess genome quality using BUSCO.
   </summary>
    
    results can be viewed in the short_summary file inside the BUSCO output directory (MyGenomeID_final_busco)
    ```
       sbatch BuscoSingularity.sh path/to/MyGenome.fasta
    ```
+
+Busco Completeness Score: 98.6%
+
 </details>
 
 
@@ -145,8 +158,9 @@ Sg337 genome of Pyricularia oryzae
   <summary>
     10) Genome interrogation using BLAST to look at contig length and split contigs.
   </summary>
+
+   BLAST was used to find mitochondrial contigs for excemption for NBCI submission
    
-   details on each code
    ```
     blastn -query MoMitochondrion.fasta -subject MyGenome_final.fasta -evalue 1e-50 -max_target_seqs 20000 -outfmt '6 qseqid sseqid slen length qstart qend sstart send btop' -out MoMitochondrion.MyGenome.BLAST
     singularity run --app blast2120 /share/singularity/images/ccs/conda/amd-conda1-centos8.sinf blastn...
@@ -154,13 +168,16 @@ Sg337 genome of Pyricularia oryzae
     awk '$4/$3 <= 0.9' MoMitochrondrion.MyGenomeID.BLAST > MyGenomeID_short_mitochrondial_hits.txt
     awk '{sum[$2]+=$4; len[$2]=$3} END {for (c in sum) if (sum[c]/len[c] > 0.9) print c "," sum[c] "," len[c] "," sum[c]/len[c]}' MyGenomeID_short_mitochondrial_hits.txt > MyGenomeID_split_mito_contigs.csv
    ```
+
 </details>
 
 <details>
   <summary>
     11) Submit Genome to NCBI
   </summary>
-   insert photo
+   
+   <img width="1179" height="1205" alt="image" src="https://github.com/user-attachments/assets/f285ad0f-79b4-40f4-984b-d5f3b2fa6052" />
+
 </details>
 
 <details>
@@ -185,8 +202,6 @@ Sg337 genome of Pyricularia oryzae
     ```
    maker2zff B71Ref2.gff3
    ```
-
-   details on code
 
     ```
    fathom genome.ann genome.dna -gene-stats
@@ -244,17 +259,33 @@ Sg337 genome of Pyricularia oryzae
 
 <details>
   <summary>
-    13)Visualize genes using genome browser
+    13) Visualize genes using genome browser
   </summary>
    (https://igv.org/app/)
    upload MyGenomeID_final.fasta, and gff3 for snap, agustus, and MAKER
+
+
+SNAP
+
+<img width="1919" height="1077" alt="image" src="https://github.com/user-attachments/assets/2d30f19c-7a5d-4102-8f31-36e82d6e7d33" />
+
+Augustus
+
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/c3278c6c-67e2-4254-8f02-3cb75af328ef" />
+
+MAKER
+
+<img width="2345" height="1241" alt="image" src="https://github.com/user-attachments/assets/1933bebe-abc0-4c68-aaa0-a56e147ebe0d" />
+
+
+   
 </details>
 
 <details>
   <summary>
-    14)Blast Aginst B71
+    14) Blast Against B71
   </summary>
-   filter out contiges from blast, only take ones that dont match contig from our fasta file, list those
+   filter out contigs from blast, only take ones that don't match contig from our fasta file, list those
 
    ```
    blastn -query MyGenomeID.fasta -subject B71.fasta -evalue 1e-100 -outfmt 7 > MyGenomeID.B71.BLAST
@@ -274,7 +305,7 @@ Sg337 genome of Pyricularia oryzae
 
 <details>
   <summary>
-    15) Make protien fasta
+    15) Make protein fasta
   </summary>
     ```
     singularity exec /share/singularity/images/ccs/MAKER/amd-maker-debian10.sinf fasta_merge -d MyGenomeID_final.maker.output/MyGenomeID_final_master_datastore_index.log -o MyGenomeID
@@ -284,7 +315,7 @@ Sg337 genome of Pyricularia oryzae
 
 <details>
   <summary>
-    16)Using RNAseq Data to Confirm Gene Predictions
+    16) Using RNAseq Data to Confirm Gene Predictions
   </summary>
   Change directory into RNAseq 
    
@@ -295,7 +326,7 @@ Sg337 genome of Pyricularia oryzae
 
    ```
 
-Look at the resulting alignment summary file to determine the fraction fo reads that aligned to your genome assembly
+Look at the resulting alignment summary file to determine the fraction of reads that aligned to your genome assembly
 
 Align the second set of reads to your MyGenome assembly - the version you used for gene prediction
 
@@ -304,11 +335,13 @@ sbatch hisat2.sh path/to/MyGenomeID_final.fasta SSID116_inPlanta.fastq.gz
 
 ```
 
-Look at the resulting alignment summary file to determine the fraction fo reads that aligned to your genome assembly
+Look at the resulting alignment summary file to determine the fraction of reads that aligned to your genome assembly
 
 Transfer the alignment and index files (.bam and bam.bai) to the machine that is running IGV
 
-Load your genome assembly into IGV and then load the tracks for your gene predictions and the RNAseq aligment data (make sure the .bai files are in the same directory as the .bam files)
+Load your genome assembly into IGV and then load the tracks for your gene predictions and the RNAseq alignment data (make sure the .bai files are in the same directory as the .bam files)
+
+<img width="2940" height="1912" alt="image" src="https://github.com/user-attachments/assets/4ef4aa75-29a4-43b5-a23e-9bc0a1626d2b" />
 
 region with no predicted gene and high expression
 
