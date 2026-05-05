@@ -15,7 +15,7 @@ Sg337 genome of Pyricularia oryzae
    <summary>
    2) Look at html files to see report summaries.
    </summary>
-   ![FastQ Image](fastq adapter check.png)
+   ![FastQ Image]([fastq adapter check.png](https://github.com/Chandler82626/MyGenome/blob/main/fastq%20adapter%20check.png))
 </details>
 
 <details> 
